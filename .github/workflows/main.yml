@@ -7,9 +7,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Download and run Gitleaks
+      - name: Run Gitleaks STRICT
+        shell: pwsh
         run: |
-          wget -q https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz
-          tar -xzf gitleaks_8.18.4_linux_x64.tar.gz
-          ./gitleaks detect --source . --config gitleaks.toml --verbose --no-git
-        continue-on-error: false
+          # Escaneo estricto sin archivo de configuración
+          ./gitleaks.exe detect --source . --verbose --no-git --exit-code 1
+          
+          # También escanea específicamente los .env
+          Get-ChildItem -Path . -Filter .env -Recurse | ForEach-Object {
+            Write-Host "Scanning: $($_.FullName)"
+            ./gitleaks.exe detect --source $_.FullName --verbose --no-git
+          }
