@@ -6,8 +6,10 @@ jobs:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
-      - uses: gitleaks/gitleaks-action@v2
-        with:
-          source: .
-          config: gitleaks.toml
-          no-git: true
+      
+      - name: Download and run Gitleaks
+        run: |
+          wget -q https://github.com/gitleaks/gitleaks/releases/download/v8.18.4/gitleaks_8.18.4_linux_x64.tar.gz
+          tar -xzf gitleaks_8.18.4_linux_x64.tar.gz
+          ./gitleaks detect --source . --config gitleaks.toml --verbose --no-git
+        continue-on-error: false
