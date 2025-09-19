@@ -3,7 +3,7 @@ on: [push, pull_request]
 
 jobs:
   secrets:
-    runs-on: codespaces-a785b2
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - uses: gitleaks/gitleaks-action@v2
