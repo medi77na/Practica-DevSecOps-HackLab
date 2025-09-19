@@ -7,3 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: gitleaks/gitleaks-action@v2
+        with:
+          source: .
+          config: gitleaks.toml
+          no-git: true
